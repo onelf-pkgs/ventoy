@@ -28,7 +28,7 @@ path = "VentoyPlugson.sh"
 
 [[entrypoint]]
 name = "ventoy-gui"
-path = "${VENTOY_GUI}"
+path = "ventoy-gui.sh"
 
 [[entrypoint]]
 name = "ventoy-vlnk"

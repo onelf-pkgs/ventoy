@@ -119,6 +119,21 @@ sed -i 's|\./persist_tmp_mnt|/tmp/ventoy-persist_tmp_mnt|g' CreatePersistentImg.
 # the bundle always means GTK 3.
 echo gtk3 > ventoy_gui_type
 
+# The GUI runs as root. Started by anyone else, upstream's launcher runs
+# itself again through pkexec, by its path inside this package's mount,
+# which root cannot open. The packed file is what root can run, so the
+# entrypoint hands that to pkexec instead, with the display it needs,
+# since pkexec clears the environment.
+cat > ventoy-gui.sh <<EOF
+#!/bin/sh
+if [ "\$(id -u)" != 0 ]; then
+    exec pkexec env DISPLAY="\$DISPLAY" XAUTHORITY="\${XAUTHORITY:-\$HOME/.Xauthority}" \\
+        ONELF_ENTRYPOINT=ventoy-gui "\$ONELF_EXEC" "\$@"
+fi
+exec ./VentoyGUI.$arch "\$@"
+EOF
+chmod +x ventoy-gui.sh
+
 for f in boot/boot.img ventoy/ventoy.disk.img.xz "tool/$arch/Ventoy2Disk.gtk3" WebUI/index.html; do
     if [ ! -f "$f" ]; then
         echo "the tree is missing $f" >&2
@@ -132,7 +147,6 @@ done
 # from this environment when onelf loads it. The update section names
 # this architecture's asset, so it is added here.
 export VENTOY_VERSION=$version
-export VENTOY_GUI=VentoyGUI.$arch
 export GTK3_SET_URL=$gtk3_set_url
 export GTK3_SET_BLAKE3=$gtk3_set_blake3
 cp "$OLDPWD/onelf.toml" "$tree/onelf.toml"

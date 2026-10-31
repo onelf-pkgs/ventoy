@@ -7,7 +7,7 @@
 # when the recipe changes and the sources do not. Releases are tagged
 # v<ventoy version>-<release>.
 name = "ventoy"
-release = 2
+release = 3
 arches = ["x86_64", "aarch64"]
 self-update = true
 
@@ -21,9 +21,9 @@ upstream = { github = "ventoy/Ventoy", tag = "^v([0-9.]+)$" }
 # architecture's build, which the gtk release notes list. Bump the
 # three together.
 [sets.gtk3]
-version = "3.24.52-1"
+version = "3.24.52-2"
 url = "https://github.com/onelf-pkgs/gtk/releases/download/v{version}/gtk3-{arch}.onelf"
 
 [sets.gtk3.blake3]
-x86_64 = "6aaa316e83b2900db09254563b57d4d682fbc1283af2ba4bca20a0af2988d932"
-aarch64 = "445bc5087f5a0113b728a0d5b76d549e0a40898ffaf70768632f3472e45ab14a"
+x86_64 = "eadb7e22b8afff286414b648d29f0c3656707d35d7f2531c93cdefa5aba6bf3b"
+aarch64 = "2fadad3f905a280cf009b0e3ca82dc22baa66c326b872f147141e13eeb025841"

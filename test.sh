@@ -14,7 +14,7 @@ arch=$(uname -m)
 
 xbps-install -Syu xbps > /dev/null
 xbps-install -Syu > /dev/null
-xbps-install -y curl bash libgcc > /dev/null
+xbps-install -y curl bash libgcc xorg-server-xvfb xwininfo > /dev/null
 
 packed=dist/ventoy-$arch.onelf
 onelf verify "$packed"
@@ -95,5 +95,25 @@ ln -s "$(cd dist && pwd)/ventoy-$arch.onelf" ventoy-plugson
 ./ventoy-plugson > "$extract/plugson.txt" 2>&1
 grep -q "Usage" "$extract/plugson.txt"
 rm -f ventoy-plugson
+
+# The GUI opens its window, as root, with every icon: GTK finds what it
+# needs in the set rather than on the host, which has none of it here.
+Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+xvfb=$!
+DISPLAY=:99 ONELF_ENTRYPOINT=ventoy-gui "$packed" > "$extract/gui.log" 2>&1 &
+gui=$!
+i=0
+while [ $i -lt 60 ] && ! DISPLAY=:99 xwininfo -root -tree 2> /dev/null | grep -q '"Ventoy2Disk"'; do
+    i=$((i + 1))
+    sleep 1
+done
+sleep 2
+kill "$gui" "$xvfb" 2> /dev/null || true
+wait "$gui" "$xvfb" 2> /dev/null || true
+if [ $i -eq 60 ] || grep -q "Could not load" "$extract/gui.log"; then
+    cat "$extract/gui.log" >&2
+    echo "the GUI did not come up whole" >&2
+    exit 1
+fi
 
 echo "ventoy-$arch: verify, contents and launches ok"

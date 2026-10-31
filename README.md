@@ -39,6 +39,8 @@ tarball to extract and `cd` into.
 
 Still true of Ventoy itself: creating drives needs root, and the
 scripts drive the host's `fdisk`, `mkfs.vfat`, `losetup` and friends.
+`ventoy-gui` started without root asks for it through `pkexec`, as
+upstream's launcher does, and runs the packed file again as root.
 The browser UI and Plugson need `bash`, as upstream's scripts are
 written for it. Logs go to `$VENTOY_LOG`, `/tmp` by default; scratch
 and mount directories go to `/tmp`.
