@@ -1,0 +1,29 @@
+# Ventoy for onelf: the USB boot tool packed as one file per
+# architecture, with the GTK 3 stack of its GUI drawn from the shared
+# gtk3 set at launch.
+#
+# The control repository, onelf-pkgs/.github, bumps the sources here when
+# upstream releases and resets `release` to 1. Raise `release` by hand
+# when the recipe changes and the sources do not. Releases are tagged
+# v<ventoy version>-<release>.
+name = "ventoy"
+release = 1
+arches = ["x86_64", "aarch64"]
+self-update = true
+
+[sources.ventoy]
+version = "1.1.18"
+url = "https://github.com/ventoy/Ventoy/releases/download/v{version}/ventoy-{version}-linux.tar.gz"
+sha256 = "d86ff9de63d94c8b8f1f6b14d23c55af4b88e8207bf2893890892a6a97b1ad54"
+upstream = { github = "ventoy/Ventoy", tag = "^v([0-9.]+)$" }
+
+# The gtk3 set the GUI runs on, pinned by the BLAKE3 of each
+# architecture's build, which the gtk release notes list. Bump the
+# three together.
+[sets.gtk3]
+version = "3.24.52-1"
+url = "https://github.com/onelf-pkgs/gtk/releases/download/v{version}/gtk3-{arch}.onelf"
+
+[sets.gtk3.blake3]
+x86_64 = ""
+aarch64 = ""

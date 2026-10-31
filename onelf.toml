@@ -1,0 +1,56 @@
+# The onelf recipe for the assembled tree: build.sh copies this beside
+# the Ventoy files and exports what the ${...} placeholders name, which
+# onelf expands when it loads the recipe. Nothing here names this
+# machine or this architecture.
+[package]
+name = "ventoy"
+command = "Ventoy2Disk.sh"
+version = "${VENTOY_VERSION}"
+description = "A tool to create bootable USB drives with ISO files"
+license = "GPL-3.0-or-later"
+homepage = "https://www.ventoy.net"
+working-dir = "package"
+needs-setuid = true
+exclude = ["onelf.toml"]
+
+[[entrypoint]]
+name = "ventoy"
+path = "Ventoy2Disk.sh"
+default = true
+
+[[entrypoint]]
+name = "ventoy-web"
+path = "VentoyWeb.sh"
+
+[[entrypoint]]
+name = "ventoy-plugson"
+path = "VentoyPlugson.sh"
+
+[[entrypoint]]
+name = "ventoy-gui"
+path = "${VENTOY_GUI}"
+
+[[entrypoint]]
+name = "ventoy-vlnk"
+path = "VentoyVlnk.sh"
+
+[[entrypoint]]
+name = "ventoy-create-persistent"
+path = "CreatePersistentImg.sh"
+
+[[entrypoint]]
+name = "ventoy-extend-persistent"
+path = "ExtendPersistentImg.sh"
+
+[bundle]
+no-gtk = true
+no-wayland = true
+# The gtk3 set carries no glibc, and the bundle's own binaries never
+# ask for libm directly; the set's libraries do, and they resolve it
+# through the bundle's lib directory at launch.
+include = ["libm.so.6"]
+
+[sysroot.sets.gtk3]
+packages = ["gtk+3"]
+url = "${GTK3_SET_URL}"
+blake3 = "${GTK3_SET_BLAKE3}"
