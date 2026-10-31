@@ -25,5 +25,5 @@ version = "3.24.52-1"
 url = "https://github.com/onelf-pkgs/gtk/releases/download/v{version}/gtk3-{arch}.onelf"
 
 [sets.gtk3.blake3]
-x86_64 = ""
-aarch64 = ""
+x86_64 = "6aaa316e83b2900db09254563b57d4d682fbc1283af2ba4bca20a0af2988d932"
+aarch64 = "445bc5087f5a0113b728a0d5b76d549e0a40898ffaf70768632f3472e45ab14a"
