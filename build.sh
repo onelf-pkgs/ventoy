@@ -123,12 +123,20 @@ echo gtk3 > ventoy_gui_type
 # itself again through pkexec, by its path inside this package's mount,
 # which root cannot open. The packed file is what root can run, so the
 # entrypoint hands that to pkexec instead, with the display it needs,
-# since pkexec clears the environment.
+# since pkexec clears the environment. The launch has already put the
+# gtk3 set in the user's store, so root reads it from there rather than
+# fetching its own copy; a store holding the build is only read. Without
+# the build there, root keeps to its own store and never writes into the
+# user's.
 cat > ventoy-gui.sh <<EOF
 #!/bin/sh
 if [ "\$(id -u)" != 0 ]; then
+    store=\${ONELF_PLATFORM_STORE:-\${XDG_CACHE_HOME:-\$HOME/.cache}/onelf/platform}
+    if [ ! -f "\$store/gtk3/$gtk3_set_blake3.onelf" ]; then
+        store=
+    fi
     exec pkexec env DISPLAY="\$DISPLAY" XAUTHORITY="\${XAUTHORITY:-\$HOME/.Xauthority}" \\
-        ONELF_ENTRYPOINT=ventoy-gui "\$ONELF_EXEC" "\$@"
+        ONELF_PLATFORM_STORE="\$store" ONELF_ENTRYPOINT=ventoy-gui "\$ONELF_EXEC" "\$@"
 fi
 exec ./VentoyGUI.$arch "\$@"
 EOF
