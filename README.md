@@ -20,7 +20,8 @@ tarball to extract and `cd` into.
   installed; here a `ventoy_gui_type` file pins GTK 3, the Qt and GTK 2
   backends are dropped, and the toolkit is fetched at launch from the
   set the recipe pins by hash. A host without GTK therefore runs the
-  GUI anyway.
+  GUI anyway. Only `ventoy-gui` fetches the set; the other commands
+  never download it.
 - **One architecture per package.** The tarball carries i386, x86_64,
   aarch64 and mips64el; each build keeps its own tool directory and
   launcher, since the scripts pick the directory from `uname` anyway.
@@ -55,8 +56,8 @@ of the same Ventoy. Each release carries, per architecture:
 | `ventoy-<arch>.onelf` | the whole tool, every entrypoint |
 | `ventoy-<arch>.onelf.sig` | its signature, which the self-update checks |
 
-At launch the package fetches the gtk3 set it pins, unless the host
-store already holds that build.
+The first `ventoy-gui` launch fetches the gtk3 set it pins, unless the
+host store already holds that build.
 
 ## Building
 

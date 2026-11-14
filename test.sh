@@ -59,13 +59,6 @@ do
     esac
 done
 set_hash=$(sed -n 's/^blake3 = "\(.*\)"/\1/p' "$extract/.onelf/sets")
-
-# The launch fetches the set only when the store does not already hold
-# the build its pin names.
-if [ -n "${GTK3_SET_FILE:-}" ]; then
-    mkdir -p "$store/gtk3"
-    cp "$GTK3_SET_FILE" "$store/gtk3/$set_hash.onelf"
-fi
 export ONELF_PLATFORM_STORE=$store
 
 # No arguments: the CLI prints its usage (and exits nonzero, as
@@ -95,6 +88,19 @@ ln -s "$(cd dist && pwd)/ventoy-$arch.onelf" ventoy-plugson
 ./ventoy-plugson > "$extract/plugson.txt" 2>&1
 grep -q "Usage" "$extract/plugson.txt"
 rm -f ventoy-plugson
+
+# Only the GUI selects the gtk3 set, so nothing so far fetched it.
+if [ -e "$store/gtk3" ]; then
+    echo "an entrypoint other than the GUI fetched the gtk3 set" >&2
+    exit 1
+fi
+
+# The launch fetches the set only when the store does not already hold
+# the build its pin names.
+if [ -n "${GTK3_SET_FILE:-}" ]; then
+    mkdir -p "$store/gtk3"
+    cp "$GTK3_SET_FILE" "$store/gtk3/$set_hash.onelf"
+fi
 
 # The GUI opens its window, as root, with every icon: GTK finds what it
 # needs in the set rather than on the host, which has none of it here.

@@ -13,34 +13,43 @@ working-dir = "package"
 needs-setuid = true
 exclude = ["onelf.toml"]
 
+# Only the GUI draws on the gtk3 set; every other entrypoint launches
+# without fetching or mounting it.
 [[entrypoint]]
 name = "ventoy"
 path = "Ventoy2Disk.sh"
 default = true
+sets = []
 
 [[entrypoint]]
 name = "ventoy-web"
 path = "VentoyWeb.sh"
+sets = []
 
 [[entrypoint]]
 name = "ventoy-plugson"
 path = "VentoyPlugson.sh"
+sets = []
 
 [[entrypoint]]
 name = "ventoy-gui"
 path = "ventoy-gui.sh"
+sets = ["gtk3"]
 
 [[entrypoint]]
 name = "ventoy-vlnk"
 path = "VentoyVlnk.sh"
+sets = []
 
 [[entrypoint]]
 name = "ventoy-create-persistent"
 path = "CreatePersistentImg.sh"
+sets = []
 
 [[entrypoint]]
 name = "ventoy-extend-persistent"
 path = "ExtendPersistentImg.sh"
+sets = []
 
 [bundle]
 no-gtk = true
