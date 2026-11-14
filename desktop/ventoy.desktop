@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Ventoy CLI
+Exec=ventoy
+Icon=ventoy
+Terminal=true
+NoDisplay=true

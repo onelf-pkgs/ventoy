@@ -59,6 +59,11 @@ do
     esac
 done
 set_hash=$(sed -n 's/^blake3 = "\(.*\)"/\1/p' "$extract/.onelf/sets")
+
+# The GUI has a menu entry with the Ventoy icon; the CLI's is hidden.
+onelf icon "$packed" -o "$extract/icon.png"
+onelf desktop "$packed" --entrypoint ventoy-gui | grep -q '^Exec=ventoy-gui$'
+onelf desktop "$packed" | grep -q '^NoDisplay=true$'
 export ONELF_PLATFORM_STORE=$store
 
 # No arguments: the CLI prints its usage (and exits nonzero, as

@@ -138,6 +138,13 @@ exec ./VentoyGUI.$arch "\$@"
 EOF
 chmod +x ventoy-gui.sh
 
+# The menu entry opens the GUI. Integration always installs an entry for
+# the default entrypoint, the CLI, launching the bare package, so that
+# one is kept out of menus. Upstream's web UI logo is the icon.
+mkdir -p .onelf/icons .onelf/desktop
+cp WebUI/static/img/VentoyLogo.png .onelf/icons/default.png
+cp "$OLDPWD"/desktop/*.desktop .onelf/desktop/
+
 for f in boot/boot.img ventoy/ventoy.disk.img.xz "tool/$arch/Ventoy2Disk.gtk3" WebUI/index.html; do
     if [ ! -f "$f" ]; then
         echo "the tree is missing $f" >&2

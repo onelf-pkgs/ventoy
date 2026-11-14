@@ -22,6 +22,9 @@ tarball to extract and `cd` into.
   set the recipe pins by hash. A host without GTK therefore runs the
   GUI anyway. Only `ventoy-gui` fetches the set; the other commands
   never download it.
+- **A menu entry for the GUI.** `./ventoy-x86_64.onelf --onelf-integrate`
+  adds Ventoy to the desktop menu with upstream's logo, opening
+  `ventoy-gui`. The CLI's entry is installed hidden.
 - **One architecture per package.** The tarball carries i386, x86_64,
   aarch64 and mips64el; each build keeps its own tool directory and
   launcher, since the scripts pick the directory from `uname` anyway.
