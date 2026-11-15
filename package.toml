@@ -7,7 +7,7 @@
 # when the recipe changes and the sources do not. Releases are tagged
 # v<ventoy version>-<release>.
 name = "ventoy"
-release = 6
+release = 7
 arches = ["x86_64", "aarch64"]
 self-update = true
 

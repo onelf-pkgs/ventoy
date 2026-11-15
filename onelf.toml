@@ -59,6 +59,10 @@ no-wayland = true
 # through the bundle's lib directory at launch.
 include = ["libm.so.6"]
 
+[compression]
+level = 22
+payload = "stipple"
+
 [sysroot.sets.gtk3]
 packages = ["gtk+3"]
 url = "${GTK3_SET_URL}"
